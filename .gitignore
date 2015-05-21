@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <locale.h>
+#include <ctype.h>
+
+int gabarito[4][4]={{1,6,7,2},
+					{7,1,6,5},
+					{3,4,2,5},
+					{3,8,8,4}};
+
+int jogo[4][4]={{0,0,0,0},
+				{0,0,0,0},
+				{0,0,0,0},
+				{0,0,0,0}};					
+				
+void mostraGabarito(){
+	int i, j;
+	
+	system("cls");
+	printf("   |0 1 2 3\n");
+	printf(" ------------\n");
+	for(i=0;i<4;i++){
+		printf(" %d |", i);
+		for(j=0;j<4;j++){
+			printf("%d ", gabarito[i][j]);
+		}
+		printf("\n");
+	}
+	
+	Sleep(3000);
+	system("cls");
+}
+void mostrajogo(){
+	int i, j;
+	
+	system("cls");
+	printf("   |0 1 2 3\n");
+	printf(" ------------\n");
+	for(i=0;i<4;i++){
+		printf(" %d |", i);
+		for(j=0;j<4;j++){
+			if(jogo[i][j]==0){
+				printf("  ");
+			}else{
+				printf("%d ", jogo[i][j]);
+			}
+		}
+		printf("\n");
+	}
+}
+
+int leIntIntervalo(char *msg, int min, int max){
+	int num;
+	while(1){
+		printf("%s", msg);
+		scanf("%d", &num);
+		if(num<min || num>max){
+			printf("Numero invlido, fora do intervalo.");
+		}else{
+			return num;
+		}	
+	}
+}
+
+main(){
+	//configuração
+	setlocale(LC_ALL, "");
+	//declaração de variáveis locais
+	int contR, contA, lin1, col1, lin2, col2;
+	
+	contR=0;
+	contA=0;
+	
+	
+	mostraGabarito();
+	
+	while(1){
+		contR++;
+		mostrajogo();
+		printf("\nRodada %d\n\n", contR);
+		while(1){
+		
+			lin1=leIntIntervalo("Informe a linha da 1a peça: ", 0, 3);
+			col1=leIntIntervalo("Informe a coluna da 1a peça: ", 0, 3);
+			
+			if(jogo[lin1][col1]==0){
+				jogo[lin1][col1]=gabarito[lin1][col1];
+				mostrajogo();
+				break;
+			}else {
+				printf("\nPeça ja virada. Tente novamente.\n\n");
+			}
+		}
+		while(1){
+		
+			lin2=leIntIntervalo("Informe a linha da 2a peça: ", 0, 3);
+			col2=leIntIntervalo("Informe a coluna da 2a peça: ", 0, 3);
+			
+			if(jogo[lin2][col2]==0){
+				jogo[lin2][col2]=gabarito[lin2][col2];
+				mostrajogo();
+				break;
+			}else {
+				printf("\nPeça ja virada. Tente novamente.\n\n");
+			}
+		}
+		if(jogo[lin1][col1]==jogo[lin2][col2]){
+			printf("\n\nParabéns! Você achou um par!\n\n");
+			contA++;
+		} else{
+			printf("\n\nVocê errou! Não formou um par!\n\n");
+		}
+		getch();
+	}
+}
